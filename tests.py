@@ -1,22 +1,12 @@
-import unittest
+import utils
 
 from edge_detection import *
 
 
-class EdgeDetectionTests(unittest.TestCase):
-    def test_basic_conv_edge_detection(self):
-        picture_size = 100
-        image = np.zeros((picture_size, picture_size))
-        # add a square in the middle with edge size = 20:
-        square_edge_size = 20
-        image[picture_size // 2 - square_edge_size // 2:picture_size // 2 + square_edge_size // 2,
-              picture_size // 2 - square_edge_size // 2:picture_size // 2 + square_edge_size // 2] = 1
+def test_basic_conv_edge_detection():
+    image, square_side_size = utils.get_square_image()
+    derivative_image = basic_conv_edge_detection(image)
+    duplicate_side_edge = 1
+    expected_edge_numbers = 4 * (2 * square_side_size - duplicate_side_edge)
+    assert(np.sum(derivative_image) == expected_edge_numbers)
 
-        derivative_image = basic_conv_edge_detection(image)
-        duplicate_side_edge = 1
-        expected_edge_numbers = 4 * (2 * square_edge_size - duplicate_side_edge)
-        self.assertEqual(np.sum(derivative_image), expected_edge_numbers)
-
-
-if __name__ == '__main__':
-    unittest.main()
